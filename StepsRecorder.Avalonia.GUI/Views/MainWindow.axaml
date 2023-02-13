@@ -1,0 +1,60 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:sys="clr-namespace:System;assembly=System.Runtime"
+        xmlns:viewModels="clr-namespace:StepsRecorder.Avalonia.GUI.ViewModels"
+        xmlns:views="clr-namespace:StepsRecorder.Avalonia.GUI.Views"
+        xmlns:avaloniaEdit="https://github.com/avaloniaui/avaloniaedit"
+        xmlns:gui="clr-namespace:StepsRecorder.Avalonia.GUI"
+        mc:Ignorable="d"
+        x:Class="StepsRecorder.Avalonia.GUI.Views.MainWindow"
+        Title="StepsRecorder-Advanced"
+        Icon="/Resources/images/icon/swordIconEdited.ico"
+        Width="600"
+        SizeToContent="Height"
+        CanResize="False"
+        Background="{DynamicResource MainBackgroundBrush}"
+        KeyDown="Window_KeyDown"
+        PointerMoved="MainWindow_OnPointerMoved"
+        PointerPressed="MainWindow_OnPointerPressed"
+        PointerReleased="MainWindow_OnPointerReleased">
+
+    <Design.DataContext>
+        <viewModels:MainWindowViewModel />
+    </Design.DataContext>
+    
+    <Grid HorizontalAlignment="Stretch"
+          RowDefinitions="Auto,Auto,Auto,Auto">
+        
+        <!-- ~1~ MENU AREA@1@ -->
+        <!-- <Menu Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="{x:Static sys:Int32.MaxValue}" -->
+        <!--       Padding="10,5"> -->
+        <!--     <MenuItem Header="Main"> -->
+        <!--         <CheckBox Content="Show logs" IsChecked="{Binding LoggingViewModel.LoggingVisible}" /> -->
+        <!--         <MenuItem Header="Exit" Click="ExitMenuItem_OnClick" /> -->
+        <!--     </MenuItem> -->
+        <!-- </Menu> -->
+
+        <!--RECORDING-CONTROL AREA-->
+        <views:RecordingControlView Grid.Row="0"
+                                    DataContext="{Binding RecordingControlViewModel}" />
+        
+        <!-- VIEW CONFIGURATION -->
+        <StackPanel Orientation="Horizontal" Grid.Row="1" Margin="15,2" Spacing="20">
+            <CheckBox Content="Settings" IsChecked="{Binding SettingViewModel.SettingVisible}" />
+            <CheckBox Content="Text-Log" IsChecked="{Binding LoggingViewModel.LoggingVisible}" />
+        </StackPanel>
+        
+        <!--SETTING AREA-->
+        <views:SettingsView Grid.Row="2"
+                            DataContext="{Binding SettingViewModel}" 
+                            IsVisible="{Binding SettingVisible, Mode=OneWay}" />
+        
+        <!--LOGGING AREA-->
+        <views:LoggingView Grid.Row="3"
+                           DataContext="{Binding LoggingViewModel}"
+                           IsVisible="{Binding LoggingVisible, Mode=OneWay}"  
+                           Height="200" />
+    </Grid>
+</Window>
