@@ -59,6 +59,7 @@ namespace StepsRecorder.Avalonia.GUI.DependencyInjection
         {
             builder.RegisterType<GUILogger>().As<ILog>().As<IGUILog>().SingleInstance();
             builder.RegisterType<SharedSettings>().As<ISharedSettings>().SingleInstance();
+
         }
         
         private static void RegisterAppSettingsConfiguration(ContainerBuilder builder)
