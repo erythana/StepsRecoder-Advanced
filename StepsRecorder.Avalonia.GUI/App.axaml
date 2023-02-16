@@ -1,7 +1,0 @@
-<Application xmlns="https://github.com/avaloniaui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             x:Class="StepsRecorder.Avalonia.GUI.App">
-    <Application.Styles>
-        <StyleInclude Source="/Resources/Styles.axaml" />
-    </Application.Styles>
-</Application>

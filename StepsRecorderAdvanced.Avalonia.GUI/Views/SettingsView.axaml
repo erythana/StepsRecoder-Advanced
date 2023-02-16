@@ -1,0 +1,26 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:markupExtensions="clr-namespace:StepsRecorderAdvanced.Avalonia.GUI.MarkupExtensions"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="StepsRecorderAdvanced.Avalonia.GUI.Views.SettingsView">
+    <HeaderedContentControl Header="Settings"
+                            FontSize="12"
+                            Padding="10,5">
+        <StackPanel>
+            <StackPanel Orientation="Horizontal" Spacing="12">
+                <CheckBox Content="Clicks" IsChecked="{Binding RecordClick}"></CheckBox>
+                <CheckBox Content="Scrolling" IsChecked="{Binding RecordScroll}"></CheckBox>
+            </StackPanel>
+            <DockPanel LastChildFill="True">
+                
+                <Button Command="{Binding SelectTargetPathCommand}" DockPanel.Dock="Right">
+                    <Image Source="{markupExtensions:IconImage IconLigatureName=source}" Width="12" Height="12" />
+                </Button>
+                <TextBox IsReadOnly="True" Text="{Binding TargetPath.FullName, Mode=OneWay}" />
+            </DockPanel>
+        </StackPanel>
+
+    </HeaderedContentControl>
+</UserControl>
