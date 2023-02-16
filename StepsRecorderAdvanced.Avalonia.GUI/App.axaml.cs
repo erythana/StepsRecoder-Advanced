@@ -1,4 +1,6 @@
+using System;
 using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using StepsRecorderAdvanced.Avalonia.GUI.Views;
@@ -19,5 +21,13 @@ namespace StepsRecorderAdvanced.Avalonia.GUI
             
             base.OnFrameworkInitializationCompleted();
         }
+        
+        public static Window GetMainWindow() =>
+            Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime
+            {
+                MainWindow: { } mainWindow
+            }
+                ? mainWindow
+                : throw new NotSupportedException("This application needs to run in a desktop environment.");
     }
 }

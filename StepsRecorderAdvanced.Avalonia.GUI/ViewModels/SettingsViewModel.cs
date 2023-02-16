@@ -1,13 +1,15 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
-using Avalonia;
+using System.Linq;
 using Avalonia.Controls;
-using Avalonia.Controls.ApplicationLifetimes;
 using StepsRecorderAdvanced.Core.Models.Extensions;
 using StepsRecorderAdvanced.Core.ViewModels;
 using Microsoft.Toolkit.Mvvm.Input;
+using StepsRecorderAdvanced.Avalonia.GUI.ViewModels.Interfaces;
 using StepsRecorderAdvanced.Core.Models.Interfaces;
-using StepsRecorderAdvanced.Core.ViewModels.Interfaces;
 
 namespace StepsRecorderAdvanced.Avalonia.GUI.ViewModels
 {
@@ -16,6 +18,7 @@ namespace StepsRecorderAdvanced.Avalonia.GUI.ViewModels
         private readonly ISharedSettings settings;
         private bool settingVisible;
         private DirectoryInfo targetPath;
+        private readonly Dictionary<string, List<string>> propertyErrors = new();
 
         #region member fields
 
@@ -25,8 +28,9 @@ namespace StepsRecorderAdvanced.Avalonia.GUI.ViewModels
 
         public SettingsViewModel(ISharedSettings settings)
         {
-            //TODO: Load TargetPath from settings
             this.settings = settings;
+            TargetPath =
+                new DirectoryInfo(Directory.GetDirectoryRoot(Directory.GetCurrentDirectory())); //TODO: Load TargetPath from settings
             SelectTargetPathCommand = new RelayCommand(ExecuteSelectTargetPathCommand);
         }
 
@@ -38,7 +42,7 @@ namespace StepsRecorderAdvanced.Avalonia.GUI.ViewModels
                 Directory = Environment.SpecialFolder.MyPictures.ToString()
             };
 
-            var result = await folderDialog.ShowAsync(GetMainWindow()!); //TODO: check how to solve this
+            var result = await folderDialog.ShowAsync(App.GetMainWindow());
             TrySetTargetDirectory(result);
         }
 
@@ -63,8 +67,13 @@ namespace StepsRecorderAdvanced.Avalonia.GUI.ViewModels
             get => targetPath;
             private set
             {
-                SetProperty(ref targetPath, value);
                 settings.TargetDirectory = value;
+                
+                ClearErrors(nameof(TargetPath));
+                if (!ValidateTargetPath(value, out var errorMessage))
+                    AddError(nameof(TargetPath), errorMessage);
+
+                SetProperty(ref targetPath, value);
             }
         }
 
@@ -86,22 +95,54 @@ namespace StepsRecorderAdvanced.Avalonia.GUI.ViewModels
 
         private void TrySetTargetDirectory(string? result)
         {
-            if (result is not null)
-            {
-                var directoryInfo = new DirectoryInfo(result);
-                if (directoryInfo.HasWriteAccess())
-                    TargetPath = directoryInfo;
-            }
-            //TODO: Proper handling, maybe with an validationerror or some sort of notificatino for the user
+            if (result is null) return;
+            TargetPath = new DirectoryInfo(result);
         }
         
-        private Window? GetMainWindow() =>
-            Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime
+        private static bool ValidateTargetPath(DirectoryInfo target, out string errorMessage)
+        {
+            errorMessage = target switch
             {
-                MainWindow: { } mainWindow
-            }
-                ? mainWindow
-                : throw new NotSupportedException("This application needs to run in a desktop environment.");
+                { Exists: false } => "The specified path doesn't exist",
+                { } when !target.HasWriteAccess() => "Can't write to directory",
+                _ => string.Empty
+            };
+            return string.IsNullOrEmpty(errorMessage);
+        }
+
+        #endregion
+
+        #region INotifyDataError implementation
+
+        public event EventHandler<DataErrorsChangedEventArgs>? ErrorsChanged;
+
+        public IEnumerable GetErrors(string? propertyName) =>
+            propertyName is not null && propertyErrors.TryGetValue(propertyName, out var errors)
+                ? errors
+                : Enumerable.Empty<object>();
+
+        public bool HasErrors => propertyErrors.Count > 0;
+
+        private void AddError(string propertyName, string error)
+        {
+            if (!propertyErrors.TryAdd(propertyName, new List<string> { error }) &&
+                !propertyErrors[propertyName].Contains(error))
+                propertyErrors[propertyName].Add(error);
+
+
+            OnErrorsChanged(propertyName);
+        }
+
+        private void ClearErrors(string propertyName)
+        {
+            if (!propertyErrors.ContainsKey(propertyName)) return;
+
+            propertyErrors.Remove(propertyName);
+            OnErrorsChanged(propertyName);
+        }
+
+        private void OnErrorsChanged(string propertyName) =>
+            ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(propertyName));
 
         #endregion
     }
