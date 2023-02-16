@@ -9,10 +9,10 @@ namespace StepsRecorder.Avalonia.GUI.ViewModels
     {
         #region Constructor
 
-        public MainWindowViewModel(IRecordingControlViewModel recordingControlViewModel, ISettingViewModel settingViewModel, ILoggingViewModel loggingViewModel)
+        public MainWindowViewModel(IRecordingControlViewModel recordingControlViewModel, ISettingsViewModel settingsViewModel, ILoggingViewModel loggingViewModel)
         {
             RecordingControlViewModel = recordingControlViewModel;
-            SettingViewModel = settingViewModel;
+            SettingsViewModel = settingsViewModel;
             LoggingViewModel = loggingViewModel;
         }
 
@@ -26,7 +26,7 @@ namespace StepsRecorder.Avalonia.GUI.ViewModels
 
         public IRecordingControlViewModel RecordingControlViewModel { get; private set; }
         
-        public ISettingViewModel SettingViewModel { get; private set; }
+        public ISettingsViewModel SettingsViewModel { get; private set; }
         
         public ILoggingViewModel LoggingViewModel { get; private set; }
 

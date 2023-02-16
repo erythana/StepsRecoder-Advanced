@@ -42,13 +42,13 @@
         
         <!-- VIEW CONFIGURATION -->
         <StackPanel Orientation="Horizontal" Grid.Row="1" Margin="15,2" Spacing="20">
-            <CheckBox Content="Settings" IsChecked="{Binding SettingViewModel.SettingVisible}" />
+            <CheckBox Content="Settings" IsChecked="{Binding SettingsViewModel.SettingVisible}" />
             <CheckBox Content="Text-Log" IsChecked="{Binding LoggingViewModel.LoggingVisible}" />
         </StackPanel>
         
         <!--SETTING AREA-->
         <views:SettingsView Grid.Row="2"
-                            DataContext="{Binding SettingViewModel}" 
+                            DataContext="{Binding SettingsViewModel}" 
                             IsVisible="{Binding SettingVisible, Mode=OneWay}" />
         
         <!--LOGGING AREA-->

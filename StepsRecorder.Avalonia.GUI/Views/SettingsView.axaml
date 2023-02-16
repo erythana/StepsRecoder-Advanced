@@ -7,11 +7,20 @@
              x:Class="StepsRecorder.Avalonia.GUI.Views.SettingsView">
     <HeaderedContentControl Header="Settings"
                             FontSize="12"
-                            Padding="10,5"
-                            DataContext="{Binding SettingViewModel}">
-        <StackPanel Orientation="Horizontal">
-            <CheckBox Content="Clicks"></CheckBox>
-            <CheckBox Content="Scrolling"></CheckBox>
+                            Padding="10,5">
+        <StackPanel>
+            <StackPanel Orientation="Horizontal" Spacing="12">
+                <CheckBox Content="Clicks" IsChecked="{Binding RecordClick}"></CheckBox>
+                <CheckBox Content="Scrolling" IsChecked="{Binding RecordScroll}"></CheckBox>
+            </StackPanel>
+            <DockPanel LastChildFill="True">
+                
+                <Button Command="{Binding SelectTargetPathCommand}" DockPanel.Dock="Right">
+                    <Image Source="{markupExtensions:IconImage IconLigatureName=source}" Width="12" Height="12" />
+                </Button>
+                <TextBox IsReadOnly="True" Text="{Binding TargetPath.FullName, Mode=OneWay}" />
+            </DockPanel>
         </StackPanel>
+
     </HeaderedContentControl>
 </UserControl>

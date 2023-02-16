@@ -4,13 +4,12 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:markupExtensions="clr-namespace:StepsRecorder.Avalonia.GUI.MarkupExtensions"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="StepsRecorder.Avalonia.GUI.Views.RecordingControlView"
-             >
+             x:Class="StepsRecorder.Avalonia.GUI.Views.RecordingControlView">
     <HeaderedContentControl Header="Recording"
                             FontSize="12"
                             Padding="10,5">
         <StackPanel Orientation="Horizontal">
-            <Button Content="{Binding CurrentBehaviourString}" Command="{Binding RecordCommand}" />
+            <Button Content="{Binding CurrentBehaviourString}" Command="{Binding RecordingCommand}" />
         </StackPanel>
     </HeaderedContentControl>
 </UserControl>

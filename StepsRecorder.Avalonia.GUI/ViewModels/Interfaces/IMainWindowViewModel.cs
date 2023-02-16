@@ -6,7 +6,7 @@ namespace StepsRecorder.Avalonia.GUI.ViewModels.Interfaces
     {
         public IRecordingControlViewModel RecordingControlViewModel { get; }
         
-        public ISettingViewModel SettingViewModel { get; }
+        public ISettingsViewModel SettingsViewModel { get; }
         
         public ILoggingViewModel LoggingViewModel { get; }
     }

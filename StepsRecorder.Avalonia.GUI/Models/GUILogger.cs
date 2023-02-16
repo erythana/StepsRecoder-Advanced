@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using StepsRecorder.Avalonia.GUI.Models.Interfaces;
 using StepsRecorderAdvanced.Core.Models.Enums;
+using StepsRecorderAdvanced.Core.Models;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 
 namespace StepsRecorder.Avalonia.GUI.Models
