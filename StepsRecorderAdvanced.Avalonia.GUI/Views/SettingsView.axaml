@@ -14,11 +14,10 @@
                 <CheckBox Content="Scrolling" IsChecked="{Binding RecordScroll}"></CheckBox>
             </StackPanel>
             <DockPanel LastChildFill="True">
-                
                 <Button Command="{Binding SelectTargetPathCommand}" DockPanel.Dock="Right">
                     <Image Source="{markupExtensions:IconImage IconLigatureName=source}" Width="12" Height="12" />
                 </Button>
-                <TextBox IsReadOnly="True" Text="{Binding TargetPath.FullName, Mode=OneWay}" />
+                <TextBox IsReadOnly="True" Text="{Binding FullName, Path=TargetPath, Mode=OneWay }" Margin="0,0,8,0" />
             </DockPanel>
         </StackPanel>
 

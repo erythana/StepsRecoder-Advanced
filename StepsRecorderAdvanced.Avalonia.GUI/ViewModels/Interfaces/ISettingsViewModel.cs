@@ -2,9 +2,9 @@
 using System.IO;
 using Microsoft.Toolkit.Mvvm.Input;
 
-namespace StepsRecorderAdvanced.Core.ViewModels.Interfaces
+namespace StepsRecorderAdvanced.Avalonia.GUI.ViewModels.Interfaces
 {
-    public interface ISettingsViewModel
+    public interface ISettingsViewModel : INotifyDataErrorInfo 
     {
         public bool RecordClick { get; set; }
         public bool RecordScroll { get; set; }
