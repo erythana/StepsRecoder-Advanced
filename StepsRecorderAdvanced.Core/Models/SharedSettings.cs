@@ -39,6 +39,7 @@ public class SharedSettings : ObservableObject, ISharedSettings
         set => SetProperty(ref recordScroll, value);
     }
 
+    [JsonConverter(typeof(DirectoryInfoJsonConverter))]
     public DirectoryInfo TargetDirectory
     {
         get => targetDirectory;
@@ -49,7 +50,7 @@ public class SharedSettings : ObservableObject, ISharedSettings
 
     #region interface methods
 
-    public string PrintActiveSettings() => JsonSerializer.Serialize(this);//TODO:check --> cycle on directoryinfo
+    public string ActiveSettingsJSON() => JsonSerializer.Serialize(this);
     
     #endregion
 }
