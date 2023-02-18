@@ -11,7 +11,7 @@ namespace StepsRecorderAdvanced.Avalonia.GUI.ViewModels.Interfaces
         public bool RecordScroll { get; set; }
         public bool SettingVisible { get; set; }
         
-        public DirectoryInfo TargetPath { get; }
+        public DirectoryInfo ScreenshotTargetPath { get; }
         
         public IRelayCommand SelectTargetPathCommand { get; }
 

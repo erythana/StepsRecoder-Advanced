@@ -1,7 +1,7 @@
 namespace StepsRecorderAdvanced.Core.Models.Interfaces;
 
-public interface ISharedSettingReaderWriter<T> where T : ISharedSettings
+public interface ISharedSettingReaderWriter
 {
-    public T Read(string settings);
-    public Task Write(T settings);
+    public Task<SharedSettings?> Read(FileInfo settingsFile);
+    public Task Write(FileInfo settingsFile, string content);
 }

@@ -22,12 +22,12 @@ namespace StepsRecorderAdvanced.Avalonia.GUI
             {
                 desktop.MainWindow = new MainWindow();
                 var dataContext = desktop.MainWindow.DataContext;
-                desktop.Startup += async (sender, args) =>
+                desktop.Startup += async (_, _) =>
                 {
                     if (dataContext is MainWindowViewModel { SettingsViewModel: {} settingsViewModel})
                         await settingsViewModel.LoadSettings();
                 };
-                desktop.Exit += async (sender, args) =>
+                desktop.Exit +=  async (_, _) =>
                 {
                     if (dataContext is MainWindowViewModel { SettingsViewModel: {} settingsViewModel})
                         await settingsViewModel.SaveSettings();

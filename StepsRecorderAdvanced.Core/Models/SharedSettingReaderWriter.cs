@@ -1,14 +1,40 @@
+using System.Text.Json;
+using StepsRecorderAdvanced.Core.Models.Extensions;
+
 namespace StepsRecorderAdvanced.Core.Models.Interfaces;
 
-public class SharedSettingReaderWriter<T> : ISharedSettingReaderWriter<T> where T : ISharedSettings
+public class SharedSettingReaderWriter : ISharedSettingReaderWriter
 {
-    public T Read(string settings)
+    public async Task<SharedSettings?> Read(FileInfo settingsFile)
     {
-        throw new NotImplementedException();
+        try
+        {
+            var options = new JsonSerializerOptions
+            {
+                Converters =
+                {
+                    new DirectoryInfoJsonConverter()
+                }
+            };
+            await using var stream = settingsFile.OpenRead();
+            return await JsonSerializer.DeserializeAsync<SharedSettings>(stream, options);
+        }
+        catch
+        {
+            return new SharedSettings();
+        }
+
     }
 
-    public Task Write(T settings)
+    public async Task Write(FileInfo settingsFile, string content)
     {
-        throw new NotImplementedException();
+        if (!settingsFile.Exists || settingsFile.IsReadOnly)
+            return;
+
+        await using var stream = settingsFile.CreateText();
+        await stream.WriteAsync(content);
+        await stream.FlushAsync();
+
+
     }
 }

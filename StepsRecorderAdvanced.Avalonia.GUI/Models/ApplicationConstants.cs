@@ -5,8 +5,8 @@ namespace StepsRecorderAdvanced.Avalonia.GUI.Models
 {
     internal static class ApplicationConstants
     {
-        public static readonly string ApplicationName = "StepsRecorder";
-        public static readonly string SettingFile = $"{AppDomain.CurrentDomain.BaseDirectory}\\settings.json";//Seperate file or appsettings.json?
+        public const string ApplicationName = "StepsRecorder-Advanced";
+        public const string SettingFileName = "config.json";
 
         public static class Logging
         {
