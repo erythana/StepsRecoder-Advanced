@@ -28,13 +28,21 @@ public class SharedSettingReaderWriter : ISharedSettingReaderWriter
 
     public async Task Write(FileInfo settingsFile, string content)
     {
-        if (!settingsFile.Exists || settingsFile.IsReadOnly)
-            return;
+        try
+        {
+            if (!settingsFile.Directory?.Exists == true)
+                Directory.CreateDirectory(settingsFile.Directory!.FullName);
 
-        await using var stream = settingsFile.CreateText();
-        await stream.WriteAsync(content);
-        await stream.FlushAsync();
+            if (!settingsFile.Directory?.HasWriteAccess() == true || settingsFile.Exists && settingsFile.IsReadOnly)
+                return;
 
-
+            await using var stream = settingsFile.CreateText();
+            await stream.WriteAsync(content);
+            await stream.FlushAsync();
+        }
+        catch (Exception ex)
+        {
+            
+        }
     }
 }
