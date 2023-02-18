@@ -95,12 +95,8 @@ namespace StepsRecorderAdvanced.Avalonia.GUI.ViewModels
             set => SetProperty(ref settingVisible, value);
         }
 
-        #endregion
+        #region ILoadWriteSettings implementation
 
-        #region Commands
-
-        public IRelayCommand SelectTargetPathCommand { get; }
-        
         public async Task LoadSettings()
         {
             var sharedSettings = await settingsReaderWriter.Read(settingsFile);
@@ -114,6 +110,14 @@ namespace StepsRecorderAdvanced.Avalonia.GUI.ViewModels
         {
             await settingsReaderWriter.Write(settingsFile, settings.WriteAsJSON());
         }
+
+        #endregion
+
+        #endregion
+
+        #region Commands
+
+        public IRelayCommand SelectTargetPathCommand { get; }
 
         #endregion
 

@@ -1,11 +1,11 @@
 ﻿using System.ComponentModel;
 using System.IO;
-using System.Threading.Tasks;
 using Microsoft.Toolkit.Mvvm.Input;
+using StepsRecorderAdvanced.Core.Models.Interfaces;
 
 namespace StepsRecorderAdvanced.Avalonia.GUI.ViewModels.Interfaces
 {
-    public interface ISettingsViewModel : INotifyDataErrorInfo 
+    public interface ISettingsViewModel : INotifyDataErrorInfo , ILoadWriteSettings
     {
         public bool RecordClick { get; set; }
         public bool RecordScroll { get; set; }
@@ -14,9 +14,6 @@ namespace StepsRecorderAdvanced.Avalonia.GUI.ViewModels.Interfaces
         public DirectoryInfo ScreenshotTargetPath { get; }
         
         public IRelayCommand SelectTargetPathCommand { get; }
-
-        public Task LoadSettings();
-
-        public Task SaveSettings();
     }
+
 }

@@ -5,7 +5,9 @@ using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using StepsRecorderAdvanced.Avalonia.GUI.ViewModels;
+using StepsRecorderAdvanced.Avalonia.GUI.ViewModels.Interfaces;
 using StepsRecorderAdvanced.Avalonia.GUI.Views;
+using StepsRecorderAdvanced.Core.Models.Interfaces;
 
 namespace StepsRecorderAdvanced.Avalonia.GUI
 {
@@ -24,12 +26,12 @@ namespace StepsRecorderAdvanced.Avalonia.GUI
                 var dataContext = desktop.MainWindow.DataContext;
                 desktop.Startup += async (_, _) =>
                 {
-                    if (dataContext is MainWindowViewModel { SettingsViewModel: {} settingsViewModel})
+                    if (dataContext is MainWindowViewModel { SettingsViewModel: ILoadWriteSettings settingsViewModel})
                         await settingsViewModel.LoadSettings();
                 };
                 desktop.Exit +=  async (_, _) =>
                 {
-                    if (dataContext is MainWindowViewModel { SettingsViewModel: {} settingsViewModel})
+                    if (dataContext is MainWindowViewModel { SettingsViewModel: ILoadWriteSettings settingsViewModel})
                         await settingsViewModel.SaveSettings();
                 };
             }
