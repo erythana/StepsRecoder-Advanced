@@ -36,7 +36,6 @@ namespace StepsRecorderAdvanced.Avalonia.GUI.DependencyInjection
 
         private static void RegisterOpenGenericTypes(ContainerBuilder builder)
         {
-           
         }
         
         private static void RegisterTypeModels(ContainerBuilder builder)

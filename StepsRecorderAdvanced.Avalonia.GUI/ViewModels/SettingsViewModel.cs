@@ -4,21 +4,29 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using Avalonia.Controls;
+using Microsoft.Extensions.Configuration;
 using StepsRecorderAdvanced.Core.Models.Extensions;
 using StepsRecorderAdvanced.Core.ViewModels;
 using Microsoft.Toolkit.Mvvm.Input;
+using StepsRecorderAdvanced.Avalonia.GUI.Models;
 using StepsRecorderAdvanced.Avalonia.GUI.ViewModels.Interfaces;
+using StepsRecorderAdvanced.Core.Models;
 using StepsRecorderAdvanced.Core.Models.Interfaces;
 
 namespace StepsRecorderAdvanced.Avalonia.GUI.ViewModels
 {
     public class SettingsViewModel : ViewModelBase, ISettingsViewModel
     {
-        private readonly ISharedSettings settings;
-        private bool settingVisible;
-        private DirectoryInfo targetPath;
+        private readonly FileInfo settingsFile;
+        private readonly ISharedSettingReaderWriter settingsReaderWriter;
         private readonly Dictionary<string, List<string>> propertyErrors = new();
+        
+        private bool settingVisible;
+        private ISharedSettings settings;
+        
+        private DirectoryInfo screenshotTargetPath;
 
         #region member fields
 
@@ -26,11 +34,15 @@ namespace StepsRecorderAdvanced.Avalonia.GUI.ViewModels
 
         #region Constructor
 
-        public SettingsViewModel(ISharedSettings settings)
+        public SettingsViewModel(IConfiguration configuration, ISharedSettingReaderWriter settingsReaderWriter, ISharedSettings settings)
         {
             this.settings = settings;
-            TargetPath =
-                new DirectoryInfo(Directory.GetDirectoryRoot(Directory.GetCurrentDirectory())); //TODO: Load TargetPath from settings
+            this.settingsReaderWriter = settingsReaderWriter;
+
+            var settingsDirectory = Environment.ExpandEnvironmentVariables(configuration.GetValue<string>("ConfigDirectory")
+                                                                           ?? Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData));
+            settingsFile = new FileInfo(Path.Combine(settingsDirectory, ApplicationConstants.SettingFileName));
+            
             SelectTargetPathCommand = new RelayCommand(ExecuteSelectTargetPathCommand);
         }
 
@@ -62,18 +74,18 @@ namespace StepsRecorderAdvanced.Avalonia.GUI.ViewModels
             set => settings.RecordScroll = value;
         }
 
-        public DirectoryInfo TargetPath
+        public DirectoryInfo ScreenshotTargetPath
         {
-            get => targetPath;
+            get => settings.TargetDirectory;
             private set
             {
                 settings.TargetDirectory = value;
                 
-                ClearErrors(nameof(TargetPath));
+                ClearErrors(nameof(ScreenshotTargetPath));
                 if (!ValidateTargetPath(value, out var errorMessage))
-                    AddError(nameof(TargetPath), errorMessage);
+                    AddError(nameof(ScreenshotTargetPath), errorMessage);
 
-                SetProperty(ref targetPath, value);
+                SetProperty(ref screenshotTargetPath, value);
             }
         }
 
@@ -88,6 +100,20 @@ namespace StepsRecorderAdvanced.Avalonia.GUI.ViewModels
         #region Commands
 
         public IRelayCommand SelectTargetPathCommand { get; }
+        
+        public async Task LoadSettings()
+        {
+            var sharedSettings = await settingsReaderWriter.Read(settingsFile);
+            if (sharedSettings is not null)
+                settings = sharedSettings;
+            
+            OnPropertiesChanged(nameof(ScreenshotTargetPath), nameof(RecordScroll), nameof(RecordClick));
+        }
+
+        public async Task SaveSettings()
+        {
+            await settingsReaderWriter.Write(settingsFile, settings.WriteAsJSON());
+        }
 
         #endregion
 
@@ -96,7 +122,7 @@ namespace StepsRecorderAdvanced.Avalonia.GUI.ViewModels
         private void TrySetTargetDirectory(string? result)
         {
             if (result is null) return;
-            TargetPath = new DirectoryInfo(result);
+            ScreenshotTargetPath = new DirectoryInfo(result);
         }
         
         private static bool ValidateTargetPath(DirectoryInfo target, out string errorMessage)

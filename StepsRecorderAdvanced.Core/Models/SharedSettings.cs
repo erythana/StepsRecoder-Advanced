@@ -1,5 +1,7 @@
+using System.Net.Mime;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using StepsRecorderAdvanced.Core.Models.Interfaces;
 
@@ -19,12 +21,11 @@ public class SharedSettings : ObservableObject, ISharedSettings
 
     public SharedSettings()
     {
-        recordClick = true;
-        recordScroll = false;
+        targetDirectory = new DirectoryInfo(Directory.GetDirectoryRoot(Directory.GetCurrentDirectory()));
     }
 
     #endregion
-
+    
     #region properties
 
     public bool RecordClick
@@ -46,11 +47,17 @@ public class SharedSettings : ObservableObject, ISharedSettings
         set => SetProperty(ref targetDirectory, value);
     }
 
+    public ISharedSettings? CreateFromJSON(string json) => JsonSerializer.Deserialize<ISharedSettings>(json);
+
+    public string WriteAsJSON()
+    {
+        return JsonSerializer.Serialize(this);
+    }
+
     #endregion
 
     #region interface methods
 
-    public string ActiveSettingsJSON() => JsonSerializer.Serialize(this);
-    
+
     #endregion
 }

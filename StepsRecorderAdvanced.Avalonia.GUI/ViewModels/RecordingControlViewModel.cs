@@ -54,7 +54,7 @@ namespace StepsRecorderAdvanced.Avalonia.GUI.ViewModels
         private void ExecuteRecordingCommand()
         {
             recordingActive = !recordingActive;
-            logger.Log($"Recording state: {recordingActive}, settings used: {settings.ActiveSettingsJSON()}", LogTypeEnum.Information);
+            logger.Log($"Recording state: {recordingActive}, settings used: {settings.WriteAsJSON()}", LogTypeEnum.Information);
             
             OnPropertyChanged(nameof(CurrentBehaviourString));
         }

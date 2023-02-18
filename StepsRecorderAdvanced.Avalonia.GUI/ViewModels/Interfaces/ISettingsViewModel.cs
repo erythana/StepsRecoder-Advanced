@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.IO;
+using System.Threading.Tasks;
 using Microsoft.Toolkit.Mvvm.Input;
 
 namespace StepsRecorderAdvanced.Avalonia.GUI.ViewModels.Interfaces
@@ -10,8 +11,12 @@ namespace StepsRecorderAdvanced.Avalonia.GUI.ViewModels.Interfaces
         public bool RecordScroll { get; set; }
         public bool SettingVisible { get; set; }
         
-        public DirectoryInfo TargetPath { get; }
+        public DirectoryInfo ScreenshotTargetPath { get; }
         
         public IRelayCommand SelectTargetPathCommand { get; }
+
+        public Task LoadSettings();
+
+        public Task SaveSettings();
     }
 }

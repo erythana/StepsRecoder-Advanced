@@ -14,11 +14,7 @@
         Width="600"
         SizeToContent="Height"
         CanResize="False"
-        Background="{DynamicResource MainBackgroundBrush}"
-        KeyDown="Window_KeyDown"
-        PointerMoved="MainWindow_OnPointerMoved"
-        PointerPressed="MainWindow_OnPointerPressed"
-        PointerReleased="MainWindow_OnPointerReleased">
+        Background="{DynamicResource MainBackgroundBrush}">
 
     <Design.DataContext>
         <viewModels:MainWindowViewModel />
