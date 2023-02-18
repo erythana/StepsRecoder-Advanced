@@ -17,10 +17,10 @@ public class SharedSettings : ObservableObject, ISharedSettings
 
     #region constructor
 
-    public SharedSettings()
+    public SharedSettings(ISharedSettingReaderWriter<SharedSettings> sharedSettingReaderWriter)
     {
-        recordClick = true;
-        recordScroll = false;
+        var savedSettings = sharedSettingReaderWriter.Read("");
+        
     }
 
     #endregion
@@ -50,7 +50,7 @@ public class SharedSettings : ObservableObject, ISharedSettings
 
     #region interface methods
 
-    public string ActiveSettingsJSON() => JsonSerializer.Serialize(this);
+    public string ActiveSettings() => JsonSerializer.Serialize(this);
     
     #endregion
 }

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using Avalonia.Controls;
 using StepsRecorderAdvanced.Core.Models.Extensions;
 using StepsRecorderAdvanced.Core.ViewModels;
@@ -88,6 +89,16 @@ namespace StepsRecorderAdvanced.Avalonia.GUI.ViewModels
         #region Commands
 
         public IRelayCommand SelectTargetPathCommand { get; }
+        
+        public Task LoadSettings()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task SaveSettings()
+        {
+            throw new NotImplementedException();
+        }
 
         #endregion
 

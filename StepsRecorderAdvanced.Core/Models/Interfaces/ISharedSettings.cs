@@ -6,5 +6,5 @@ public interface ISharedSettings
     public bool RecordScroll { get; set; }
     
     public DirectoryInfo TargetDirectory { get; set; }
-    public string ActiveSettingsJSON();
+    public string ActiveSettings();
 }
