@@ -1,7 +1,8 @@
 using System.Text.Json;
 using StepsRecorderAdvanced.Core.Models.Extensions;
+using StepsRecorderAdvanced.Core.Models.Interfaces;
 
-namespace StepsRecorderAdvanced.Core.Models.Interfaces;
+namespace StepsRecorderAdvanced.Core.Models;
 
 public class SharedSettingReaderWriter : ISharedSettingReaderWriter
 {

@@ -21,6 +21,8 @@ public class SharedSettings : ObservableObject, ISharedSettings
 
     public SharedSettings()
     {
+        recordClick = true;
+        recordScroll = false;
         targetDirectory = new DirectoryInfo(Directory.GetDirectoryRoot(Directory.GetCurrentDirectory()));
     }
 
