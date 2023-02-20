@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
@@ -25,15 +26,9 @@ namespace StepsRecorderAdvanced.Avalonia.GUI
                 desktop.MainWindow = new MainWindow();
                 var dataContext = desktop.MainWindow.DataContext;
                 desktop.Startup += async (_, _) =>
-                {
-                    if (dataContext is MainWindowViewModel { SettingsViewModel: ILoadWriteSettings settingsViewModel})
-                        await settingsViewModel.LoadSettings();
-                };
-                desktop.Exit +=  async (_, _) =>
-                {
-                    if (dataContext is MainWindowViewModel { SettingsViewModel: ILoadWriteSettings settingsViewModel})
-                        await settingsViewModel.SaveSettings();
-                };
+                    await StartupProcedures(dataContext);
+                desktop.Exit += async (_, _) =>
+                    await ExitProcedures(dataContext);
             }
                 
             
@@ -47,5 +42,50 @@ namespace StepsRecorderAdvanced.Avalonia.GUI
             }
                 ? mainWindow
                 : throw new NotSupportedException("This application needs to run in a desktop environment.");
+
+        #region handler delegation
+        
+        private async Task StartupProcedures(object? dataContext)
+        {
+            await TryLoadSettings(dataContext);
+            TryRegisterMouseHooks(dataContext);
+        }
+
+        private async Task ExitProcedures(object? dataContext)
+        {
+            await TrySaveSettings(dataContext);
+            TryUnregisterMouseHooks(dataContext);
+        }
+
+        #endregion
+        
+        #region helper methods
+        
+        private async static Task TrySaveSettings(object? dataContext)
+        {
+            if (dataContext is MainWindowViewModel { SettingsViewModel: ILoadWriteSettings settingsViewModel })
+                await settingsViewModel.SaveSettings();
+        }
+        
+        private async static Task TryLoadSettings(object? dataContext)
+        {
+            if (dataContext is MainWindowViewModel { SettingsViewModel: ILoadWriteSettings settingsViewModel })
+                await settingsViewModel.LoadSettings();
+        }
+        
+        private void TryRegisterMouseHooks(object? dataContext)
+        {
+            if (dataContext is MainWindowViewModel { RecordingControlViewModel: IMouseHookControl recordingControlViewModel })
+                recordingControlViewModel.RegisterHooks();
+        }
+        
+        private void TryUnregisterMouseHooks(object? dataContext)
+        {
+            if (dataContext is MainWindowViewModel { RecordingControlViewModel: IMouseHookControl recordingControlViewModel })
+                recordingControlViewModel.DeregisterHooks();
+        }
+
+        #endregion
     }
+
 }
