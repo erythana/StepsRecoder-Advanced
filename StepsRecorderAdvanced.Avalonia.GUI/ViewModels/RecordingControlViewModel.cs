@@ -49,6 +49,11 @@ namespace StepsRecorderAdvanced.Avalonia.GUI.ViewModels
             logger.Log($"Recording state: {recordingActive}, settings used: {settings.WriteAsJSON()}", LogTypeEnum.Information);
             
             OnPropertyChanged(nameof(CurrentBehaviourString));
+
+            if(recordingActive)//TODO: proper handling
+                mouseHook.Install();
+            else
+                mouseHook.Uninstall();
         }
         
         private bool CanExecuteRecordingCommand()
