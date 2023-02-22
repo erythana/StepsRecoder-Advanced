@@ -44,6 +44,8 @@ namespace StepsRecorderAdvanced.Avalonia.GUI.ViewModels
             settingsFile = new FileInfo(Path.Combine(settingsDirectory, ApplicationConstants.SettingFileName));
             
             SelectTargetPathCommand = new RelayCommand(ExecuteSelectTargetPathCommand);
+            AvailableScreens = new List<IScreen>();
+            SelectedScreens = new List<IScreen>();
         }
 
         private async void ExecuteSelectTargetPathCommand()
@@ -88,6 +90,10 @@ namespace StepsRecorderAdvanced.Avalonia.GUI.ViewModels
                 SetProperty(ref screenshotTargetPath, value);
             }
         }
+        
+        public IEnumerable<IScreen> AvailableScreens { get; }
+        
+        public IEnumerable<IScreen> SelectedScreens { get; }
 
         public bool SettingVisible
         {

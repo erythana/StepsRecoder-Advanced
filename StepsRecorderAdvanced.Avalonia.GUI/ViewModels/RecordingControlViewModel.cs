@@ -1,28 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Threading.Tasks;
-using Avalonia;
-using Avalonia.Controls;
-using Avalonia.Controls.ApplicationLifetimes;
-using StepsRecorderAdvanced.Avalonia.GUI.Models;
-using StepsRecorderAdvanced.Avalonia.GUI.ViewModels.Interfaces;
-using StepsRecorderAdvanced.Core.Models.Extensions;
+﻿using StepsRecorderAdvanced.Avalonia.GUI.Models;
 using StepsRecorderAdvanced.Core.ViewModels;
 using Microsoft.Toolkit.Mvvm.Input;
 using StepsRecorderAdvanced.Core.Models.Enums;
-using Microsoft.Extensions.Configuration;
 using StepsRecorderAdvanced.Avalonia.GUI.Models.Interfaces;
+using StepsRecorderAdvanced.Avalonia.GUI.ViewModels.Interfaces;
 using StepsRecorderAdvanced.Core.Models.Interfaces;
 using StepsRecorderAdvanced.Core.ViewModels.Interfaces;
 
 namespace StepsRecorderAdvanced.Avalonia.GUI.ViewModels
 {
-    public class RecordingControlViewModel : ViewModelBase, IRecordingControlViewModel
+    public class RecordingControlViewModel : ViewModelBase, IRecordingControlViewModel, IMouseHookControl
     {
+        private readonly IMouseHook mouseHook;
         private readonly ISharedSettings settings;
         private readonly IGUILog logger;
-        private string currentBehaviourString = string.Empty;
 
         #region member fields
 
@@ -32,8 +23,9 @@ namespace StepsRecorderAdvanced.Avalonia.GUI.ViewModels
 
         #region Constructor
 
-        public RecordingControlViewModel(ISharedSettings settings, IGUILog logger)
+        public RecordingControlViewModel(IMouseHook mouseHook, ISharedSettings settings, IGUILog logger)
         {
+            this.mouseHook = mouseHook;
             this.settings = settings;
             this.logger = logger;
             RecordingCommand = new RelayCommand(ExecuteRecordingCommand, CanExecuteRecordingCommand);
@@ -70,5 +62,15 @@ namespace StepsRecorderAdvanced.Avalonia.GUI.ViewModels
 
   
         #endregion
+
+        #region IMouseHookControl implementation
+
+        public void RegisterHooks() => mouseHook.Install();
+        
+        public void DeregisterHooks() => mouseHook.Uninstall();
+
+        #endregion
+
+        
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using Microsoft.Toolkit.Mvvm.Input;
 using StepsRecorderAdvanced.Core.Models.Interfaces;
@@ -14,6 +15,10 @@ namespace StepsRecorderAdvanced.Avalonia.GUI.ViewModels.Interfaces
         public DirectoryInfo ScreenshotTargetPath { get; }
         
         public IRelayCommand SelectTargetPathCommand { get; }
+        
+        public IEnumerable<IScreen> AvailableScreens { get; }
+        
+        public IEnumerable<IScreen> SelectedScreens { get; }
     }
 
 }

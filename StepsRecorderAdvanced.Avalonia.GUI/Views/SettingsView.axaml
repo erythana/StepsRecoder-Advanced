@@ -19,6 +19,7 @@
                 </Button>
                 <TextBox IsReadOnly="True" Text="{Binding FullName, Path=ScreenshotTargetPath, Mode=OneWay }" Margin="0,0,8,0" />
             </DockPanel>
+            <ListBox Items="{Binding AvailableScreens}" SelectedItems="{Binding SelectedScreens}" SelectionMode="Multiple"></ListBox>
         </StackPanel>
 
     </HeaderedContentControl>

@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using Autofac;
 using StepsRecorderAdvanced.Core.Models;
 using StepsRecorderAdvanced.Core.Models.Interfaces;
@@ -9,6 +10,7 @@ using StepsRecorderAdvanced.Core.Models.Interfaces;
 using Microsoft.Extensions.Configuration;
 using StepsRecorderAdvanced.Avalonia.GUI.Models;
 using StepsRecorderAdvanced.Avalonia.GUI.Models.Interfaces;
+using StepsRecorderAdvanced.Avalonia.GUI.Models.MouseHookImpl;
 
 namespace StepsRecorderAdvanced.Avalonia.GUI.DependencyInjection
 {
@@ -20,6 +22,7 @@ namespace StepsRecorderAdvanced.Avalonia.GUI.DependencyInjection
         {
             var builder = new ContainerBuilder();
 
+            RegisterPlatformSpecificTypes(builder);
             RegisterOpenGenericTypes(builder);
             RegisterTypeModels(builder);
             RegisterTypeViewModels(builder);
@@ -33,6 +36,35 @@ namespace StepsRecorderAdvanced.Avalonia.GUI.DependencyInjection
         #endregion
 
         #region specific builder methods
+
+        #region platform specific registration
+
+        private static void RegisterPlatformSpecificTypes(ContainerBuilder builder)
+        {
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+                RegisterLinuxTypes(builder);
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+                RegisterOSXTypes(builder);
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                RegisterWindowsTypes(builder);
+        }
+
+        private static void RegisterLinuxTypes(ContainerBuilder builder)
+        {
+            
+        }
+
+        private static void RegisterWindowsTypes(ContainerBuilder builder)
+        {
+            builder.RegisterType<WindowsMouseHook>().As<IMouseHook>();
+        }
+
+        private static void RegisterOSXTypes(ContainerBuilder builder)
+        {
+            
+        }
+
+        #endregion
 
         private static void RegisterOpenGenericTypes(ContainerBuilder builder)
         {
