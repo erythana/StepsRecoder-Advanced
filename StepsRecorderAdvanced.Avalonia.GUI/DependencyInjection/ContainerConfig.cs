@@ -41,6 +41,7 @@ namespace StepsRecorderAdvanced.Avalonia.GUI.DependencyInjection
 
         private static void RegisterPlatformSpecificTypes(ContainerBuilder builder)
         {
+            //CHANGE - CREATE A FACTORY
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
                 RegisterLinuxTypes(builder);
             else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
@@ -51,17 +52,20 @@ namespace StepsRecorderAdvanced.Avalonia.GUI.DependencyInjection
 
         private static void RegisterLinuxTypes(ContainerBuilder builder)
         {
-            
+            //remove me
+            builder.RegisterType<LinuxMouseHook>().As<IMouseHook>();
         }
 
         private static void RegisterWindowsTypes(ContainerBuilder builder)
         {
+            //remove me
             builder.RegisterType<WindowsMouseHook>().As<IMouseHook>();
         }
 
         private static void RegisterOSXTypes(ContainerBuilder builder)
         {
-            
+            //remove me
+            builder.RegisterType<WindowsMouseHook>().As<IMouseHook>();
         }
 
         #endregion
