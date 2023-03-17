@@ -48,13 +48,11 @@ namespace StepsRecorderAdvanced.Avalonia.GUI
         private async Task StartupProcedures(object? dataContext)
         {
             await TryLoadSettings(dataContext);
-            TryRegisterMouseHooks(dataContext);
         }
 
         private async Task ExitProcedures(object? dataContext)
         {
             await TrySaveSettings(dataContext);
-            TryUnregisterMouseHooks(dataContext);
         }
 
         #endregion
@@ -71,18 +69,6 @@ namespace StepsRecorderAdvanced.Avalonia.GUI
         {
             if (dataContext is MainWindowViewModel { SettingsViewModel: ILoadWriteSettings settingsViewModel })
                 await settingsViewModel.LoadSettings();
-        }
-        
-        private void TryRegisterMouseHooks(object? dataContext)
-        {
-            if (dataContext is MainWindowViewModel { RecordingControlViewModel: IMouseHookControl recordingControlViewModel })
-                recordingControlViewModel.RegisterHooks();
-        }
-        
-        private void TryUnregisterMouseHooks(object? dataContext)
-        {
-            if (dataContext is MainWindowViewModel { RecordingControlViewModel: IMouseHookControl recordingControlViewModel })
-                recordingControlViewModel.DeregisterHooks();
         }
 
         #endregion
